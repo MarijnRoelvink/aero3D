@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js webgl - OBJLoader + MTLLoader</title>
+		<title>Aero3D</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 <!--		<link type="text/css" rel="stylesheet" href="main.css">-->
+		<style>
+			body {
+				margin: 0;
+			}
+		</style>
 	</head>
 
 	<body>
-		<div id="info">
-		<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - OBJLoader + MTLLoader
-		</div>
-
 		<script type="importmap">
 			{
 				"imports": {
@@ -31,6 +32,8 @@
 			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 			let camera, scene, renderer, controls;
+			let dir =  'models/'
+			let file_name = 'tube_u_s2'
 
 			init();
 			animate();
@@ -45,10 +48,10 @@
 
 				scene = new THREE.Scene();
 
-				const ambientLight = new THREE.AmbientLight( 0xffffff );
+				const ambientLight = new THREE.AmbientLight( 0xffffff);
 				scene.add( ambientLight );
 
-				const pointLight = new THREE.PointLight( 0xffffff, 15 );
+				const pointLight = new THREE.PointLight( 0xffffff, 60 );
 				camera.add( pointLight );
 				scene.add( camera );
 
@@ -77,26 +80,21 @@
 				controls.maxDistance = 5;
 
 				new MTLLoader()
-					.setPath( 'models/' )
-					.load( 'tube_u.mtl', function ( materials ) {
+					.setPath( dir )
+					.load( `${file_name}.mtl`, function ( materials ) {
 
 						materials.preload();
 
 						new OBJLoader()
 							.setMaterials( materials )
-							.setPath( 'models/' )
-							.load( 'tube_u.obj', function ( object ) {
-								object.traverse(function(child) {
-									if(child instanceof THREE.Mesh)
-									{
-										child.geometry = mergeVertices(child.geometry, 0.1);
-										child.geometry.computeVertexNormals(true);
-										child.material.shading = THREE.SmoothShading;
-									}
-								});
+							.setPath( dir )
+							.load( `${file_name}.obj`, function ( object ) {
 								object.scale.setScalar( 0.001 );
-								camera.lookAt(object.position);
-								controls.target = object.position;
+								var box = new THREE.Box3().setFromObject( object );
+								var center = new THREE.Vector3();
+								box.getCenter( center );
+								camera.lookAt(center);
+								controls.target = center;
 								scene.add( object );
 							}, onProgress );
 
