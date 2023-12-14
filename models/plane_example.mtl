@@ -1,0 +1,7 @@
+# OBJ Material Export by Luxion KeyShot
+
+newmtl airplane
+Kd 0.3 0.3 0.3
+
+newmtl tube_material
+Kd 0.2 0.3 0.5

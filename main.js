@@ -1,9 +1,7 @@
 
 import * as THREE from 'three';
 
-import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
-import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 let camera, scene, renderer, controls;
@@ -61,26 +59,18 @@ function init(config) {
 	controls.minDistance = 0.5;
 	controls.maxDistance = 5;
 
-	new MTLLoader()
-		.setPath( dir )
-		.load( `${config.model_name}.mtl`, function ( materials ) {
-
-			materials.preload();
-
-			new OBJLoader()
-				.setMaterials( materials )
-				.setPath( dir )
-				.load( `${config.model_name}.obj`, function ( object ) {
-					scale_to_screen(THREE, object);
-					let box = new THREE.Box3().setFromObject( object );
-					let center = new THREE.Vector3();
-					box.getCenter( center );
-					camera.lookAt(center);
-					controls.target = center;
-					scene.add( object );
-				}, onProgress );
-
-		} );
+	var loader = new GLTFLoader().setPath( dir );
+	loader.load( `${config.model_name}.glb`, function ( gltf )
+		{
+			let object = gltf.scene;
+			scale_to_screen(THREE, object);
+			let box = new THREE.Box3().setFromObject( object );
+			let center = new THREE.Vector3();
+			box.getCenter( center );
+			camera.lookAt(center);
+			controls.target = center;
+			scene.add( object );
+		});
 
 	//
 
