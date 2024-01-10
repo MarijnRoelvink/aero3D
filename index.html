@@ -20,6 +20,10 @@
         a, a:hover {
             color: white;
         }
+
+        .unincluded {
+	        color: red;
+        }
 	</style>
 </head>
 <body>
@@ -51,8 +55,9 @@
 		.then((json) => {
 			for (let i = 0; i < json.length; i++) {
 				let name = capit_first(json[i].name).replace("-", " ");
+				let cls = json[i].included? "included" : "unincluded";
 				$("#model-list").append(
-					`<li><a href="main.html?model=${json[i].number}">Model ${json[i].number}: ${name}</a></li>`);
+					`<li><a href="main.html?model=${json[i].number}" class="${cls}">Model ${json[i].number}: ${name}</a></li>`);
 			}
 		});
 </script>
