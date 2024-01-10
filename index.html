@@ -5,6 +5,8 @@
 	<title>Aero3D: AeroDelft visualisations</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 	<style>
         html, body {
             width: 100%;
@@ -36,11 +38,22 @@
 		</div>
 		<div class="col-12 mt-3">
 			<h3>Examples:</h3>
-			<ul>
-				<li><a href="main.html?lecture=1">Lecture 1: U tube</a></li>
+			<ul id="model-list">
 			</ul>
 		</div>
 	</div>
 </div>
 </body>
+<script src="js/helpers.js"></script>
+<script>
+	fetch(`config.json`)
+		.then((response) => response.json())
+		.then((json) => {
+			for (let i = 0; i < json.length; i++) {
+				let name = capit_first(json[i].name).replace("-", " ");
+				$("#model-list").append(
+					`<li><a href="main.html?model=${json[i].number}">Model ${json[i].number}: ${name}</a></li>`);
+			}
+		});
+</script>
 </html>

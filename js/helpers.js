@@ -8,3 +8,7 @@ function getUrlQuery(q, defaultV = "") {
 	}
 	return query[q];
 }
+
+function capit_first(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}

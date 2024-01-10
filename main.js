@@ -10,11 +10,12 @@ let dir =  'models/'
 route();
 
 function route() {
-	let lecture = getUrlQuery("lecture");
-	fetch(`lectures/lecture_${lecture}/config.json`)
+	let model = getUrlQuery("model");
+	fetch(`config.json`)
 		.then((response) => response.json())
 		.then((json) => {
-			init(json);
+			let config = json.find(item => item.number === model);
+			init(config);
 			animate();
 		});
 }
@@ -28,11 +29,24 @@ function init(config) {
 
 	scene = new THREE.Scene();
 
-	const ambientLight = new THREE.AmbientLight( 0xffffff);
+	const ambientLight = new THREE.AmbientLight( 0xffffff, 0);
 	scene.add( ambientLight );
 
-	const pointLight = new THREE.PointLight( 0xffffff, 60 );
-	camera.add( pointLight );
+	let distance = 2;
+	let positions = [[distance, 0.0, 0.0],
+					[0.0, distance, 0.0],
+					[0.0, 0.0, distance]];
+	let lights = [];
+	for (let pos of positions)  {
+		let light = new THREE.PointLight( 0xffffff, 3, 0 );
+		light.position.set(...pos);
+		scene.add(light);
+		lights.push(light);
+		const sphereSize = 0.5;
+		const pointLightHelper = new THREE.PointLightHelper( light, sphereSize );
+		// scene.add( pointLightHelper );
+	}
+
 	scene.add( camera );
 
 	// model

@@ -1,0 +1,62 @@
+[
+  {
+    "number": "01",
+    "model_name": "E01_aircraft",
+    "name": "aircraft"
+  },
+  {
+    "number": "02",
+    "model_name": "E02_cutout",
+    "name": "cutout"
+  },
+  {
+    "number": "03",
+    "model_name": "E03_tank-assembly",
+    "name": "tank-assembly"
+  },
+  {
+    "number": "04",
+    "model_name": "E04_tank",
+    "name": "tank"
+  },
+  {
+    "number": "05",
+    "model_name": "E05_Lshape",
+    "name": "Lshape"
+  },
+  {
+    "number": "06",
+    "model_name": "E06_hollow",
+    "name": "hollow"
+  },
+  {
+    "number": "07",
+    "model_name": "E07_bar",
+    "name": "bar"
+  },
+  {
+    "number": "08",
+    "model_name": "E08_landing",
+    "name": "landing"
+  },
+  {
+    "number": "09",
+    "model_name": "E09_propeller",
+    "name": "propeller"
+  },
+  {
+    "number": "10",
+    "model_name": "E10_wing",
+    "name": "wing"
+  },
+  {
+    "number": "11",
+    "model_name": "E11_wing-cross",
+    "name": "wing-cross"
+  },
+  {
+    "number": "12",
+    "model_name": "E12_wing-pallet",
+    "name": "wing-pallet"
+  }
+]
