@@ -15,7 +15,8 @@
     "number": "03",
     "model_name": "E03_tank-assembly",
     "name": "tank-assembly",
-    "included": true
+    "included": true,
+    "highlights": ["04","05","06","071"]
   },
   {
     "number": "04",
@@ -39,7 +40,15 @@
     "number": "07",
     "model_name": "E07_bar",
     "name": "bar",
-    "included": true
+    "included": true,
+    "highlights": ["071"]
+  },
+  {
+    "number": "071",
+    "model_name": "E071_bar-only",
+    "name": "bar only",
+    "included": true,
+    "hidden": true
   },
   {
     "number": "08",

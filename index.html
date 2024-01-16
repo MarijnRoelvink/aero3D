@@ -50,15 +50,35 @@
 </body>
 <script src="js/helpers.js"></script>
 <script>
+	function generateHighlights(json, i) {
+		if(json[i].highlights === undefined) {
+			return "";
+		}
+
+		let str = ""
+		for(let highlight of json[i].highlights) {
+			let model = json.find(v => v.number === highlight)
+			str = str + `<li><a href="main.html?model=${json[i].number}&highlight=${model.number}">Highlight ${model.number}: ${formatName(model.name)}</a></li>`
+		}
+		return `<ul>${str}</ul>`;
+	}
+
+	function formatName(name) {
+		return capit_first(name).replace("-", " ");
+	}
+
 	fetch(`config.json`)
 		.then((response) => response.json())
 		.then((json) => {
 			for (let i = 0; i < json.length; i++) {
-				let name = capit_first(json[i].name).replace("-", " ");
 				let cls = json[i].included? "included" : "unincluded";
+				let highlights = generateHighlights(json, i);
+				let hidden =  json[i].hidden === true? "hidden": "";
 				$("#model-list").append(
-					`<li><a href="main.html?model=${json[i].number}" class="${cls}">Model ${json[i].number}: ${name}</a></li>`);
+					`<li ${hidden}><a href="main.html?model=${json[i].number}" class="${cls}">Model ${json[i].number}: ${formatName(json[i].name)}</a></li>${highlights}`);
 			}
 		});
+
+
 </script>
 </html>
