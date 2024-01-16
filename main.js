@@ -4,7 +4,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-let camera, scene, renderer, controls;
+let camera, scene, renderer, controls, lights, o_center;
+let l_distance = 1;
 let dir =  'models/'
 
 route();
@@ -20,6 +21,20 @@ function route() {
 		});
 }
 
+function updateLights() {
+	let forward = new THREE.Vector3( );
+	let v = getVaxis(THREE, camera);
+	camera.getWorldDirection(forward);
+	forward.negate()
+		.normalize()
+		.multiplyScalar(l_distance);
+
+	let key = forward.clone().applyAxisAngle(v, -45.0/360.0*2*Math.PI).add(o_center);
+	let fill = forward.clone().applyAxisAngle(v, 45.0/360.0*2*Math.PI).add(o_center);
+	lights[0].position.copy(key);
+	lights[1].position.copy(fill);
+}
+
 function init(config) {
 
 	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20 );
@@ -28,22 +43,16 @@ function init(config) {
 	// scene
 
 	scene = new THREE.Scene();
-
-	const ambientLight = new THREE.AmbientLight( 0xffffff, 0);
-	scene.add( ambientLight );
-
-	let distance = 2;
-	let positions = [[distance, 0.0, 0.0],
-					[0.0, distance, 0.0],
-					[0.0, 0.0, distance]];
-	let lights = [];
-	for (let pos of positions)  {
-		let light = new THREE.PointLight( 0xffffff, 3, 0 );
-		light.position.set(...pos);
+	
+	let light_configs = [{color: 0xffffff, intensity: 3},
+		{color: 0xa3aeff, intensity: 2}]
+	lights = [];
+	for (let l of light_configs)  {
+		let light = new THREE.PointLight( l.color, l.intensity, 0 );
 		scene.add(light);
 		lights.push(light);
-		const sphereSize = 0.5;
-		const pointLightHelper = new THREE.PointLightHelper( light, sphereSize );
+		// const sphereSize = 0.1;
+		// const pointLightHelper = new THREE.PointLightHelper( light, sphereSize );
 		// scene.add( pointLightHelper );
 	}
 
@@ -72,6 +81,7 @@ function init(config) {
 	controls = new  OrbitControls( camera, renderer.domElement );
 	controls.minDistance = 0.5;
 	controls.maxDistance = 5;
+	controls.addEventListener('change', updateLights);
 
 	var loader = new GLTFLoader().setPath( dir );
 	loader.load( `${config.model_name}.glb`, function ( gltf )
@@ -79,10 +89,11 @@ function init(config) {
 			let object = gltf.scene;
 			scale_to_screen(THREE, object);
 			let box = new THREE.Box3().setFromObject( object );
-			let center = new THREE.Vector3();
-			box.getCenter( center );
-			camera.lookAt(center);
-			controls.target = center;
+			o_center = new THREE.Vector3();
+			box.getCenter( o_center );
+			controls.target = o_center;
+			camera.lookAt(o_center);
+			updateLights();
 			scene.add( object );
 		});
 
