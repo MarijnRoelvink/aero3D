@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 
@@ -74,6 +75,10 @@ function init(config, h_config) {
 	controls.addEventListener('change', updateLights);
 
 	var loader = new GLTFLoader().setPath(dir);
+	const dracoLoader = new DRACOLoader();
+	dracoLoader.setDecoderPath( 'https://unpkg.com/three@v0.158.0/examples/jsm/libs/draco/' );
+	loader.setDRACOLoader( dracoLoader );
+
 	loader.load(`${config.model_name}.glb`, function (gltf) {
 		let object = gltf.scene;
 		scale_to_screen(THREE, object);
@@ -102,7 +107,7 @@ function setObjectMaterial(object, highlight = false) {
 		color: standardColor,
 		specular: standardColor,
 		side: THREE.DoubleSide,
-		shininess: 100,
+		shininess: 50,
 	});
 
 	let highlightMtl = new THREE.MeshPhongMaterial({
@@ -114,7 +119,6 @@ function setObjectMaterial(object, highlight = false) {
 
 	object.traverse(o => {
 		if (o.isMesh) {
-			console.log(o.material);
 			o.material = highlight? highlightMtl: standardMtl;
 		}
 	});

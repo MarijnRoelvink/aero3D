@@ -3,7 +3,7 @@
     "number": "01",
     "model_name": "E01_aircraft",
     "name": "aircraft",
-    "included": false
+    "included": true
   },
   {
     "number": "02",
@@ -60,13 +60,13 @@
     "number": "09",
     "model_name": "E09_propeller",
     "name": "propeller",
-    "included": false
+    "included": true
   },
   {
     "number": "10",
     "model_name": "E10_wing",
     "name": "wing",
-    "included": false
+    "included": true
   },
   {
     "number": "11",
