@@ -9,7 +9,7 @@
     "number": "02",
     "model_name": "E02_cutout",
     "name": "cutout",
-    "included": false
+    "included": true
   },
   {
     "number": "03",
